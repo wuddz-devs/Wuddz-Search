@@ -50,16 +50,16 @@
 - It's Just An Awesome Way Of Doing Everyday OS Platform Tasks In A Much Quicker & Efficient Manner.
 
 
-##Cli Commands
+## Cli Commands
 - wudz-spa      -  Load Wuddz-Search
 
 
-##Contact Info:
+## Contact Info:
 - Email:     wuddz_devs@protonmail.com                                                              
 - Github:    https://github.com/wuddz-devs                                                          
 - Telegram:  https://t.me/wuddz_devs                                                                
 - Youtube:   wuddz-devs
 
 
-## Enjoy my awesome creativity lol!
-- Peace & Love Always!!
+#### Enjoy my awesome creativity lol!
+#### Peace & Love Always!!
