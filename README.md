@@ -39,7 +39,7 @@
 
 
 ## Benefits & Usage:
-- Once installed just type wudz-spa in cmd|powershell|terminal and follow on screen instructions to enjoy this awesome ALL IN 1 EXPLORER, PARSER & ARCHIVER.
+- Once installed just type wudz-spa in cmd|powershell|terminal and follow on screen instructions to enjoy this awesome ALL IN 1 SEARCHER, PARSER & ARCHIVER.
 
 - Default Output Folder Is SEARCH Folder In Current User's Downloads Directory, Unless Full Path Is Specified.
 
@@ -61,5 +61,5 @@
 - Youtube:   wuddz-devs
 
 
-#### Enjoy my awesome creativity lol!
+#### Enjoy my awesome creativity!!
 #### Peace & Love Always!!
