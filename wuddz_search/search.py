@@ -99,7 +99,7 @@ class Wuddz_Search():
                         if epath=='1':
                             epath=self.out_dir(input("Input Archivename=> ") or str(self.da))
                             pkk=getpass.getpass("Input Password Or Get Random Password=> ") or '0'
-                            if pkk=='0':pkk=''.join(secrets.choice(string.printable.strip()) for i in range(32))
+                            if pkk=='0':pkk=''.join(secrets.choice((string.ascii_letters+string.digits).strip()) for i in range(32))
                             sub="subprocess.call(['7z', 'a', '-t'+str(epath).split('.')[1], epath, '@'+lst, '-mx9', '-p'+pkk])"
                             pwf=str(Path(epath).stem).split('.')[0]
                             with open(str(self.pf).replace('archive',pwf), 'w') as ps:
