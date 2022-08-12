@@ -19,7 +19,7 @@
 - Install 7zip
 
 
-## Installing Wuddz_Iptv_Hub
+## Installing Wuddz-Search
 - Install python  [Link: https://www.python.org/downloads/]
 
 - Install 7zip  [Link: https://www.7-zip.org/download.html]
