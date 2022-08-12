@@ -184,7 +184,7 @@ class Wuddz_Search():
               ->  Hit Return|Enter Key To Save To Default File  [i.e regex_output.txt]
 """
         self.clear_screen()
-        rego=input("\033[1;32;40m"+self.regex_output.__doc__+"\033[0m\nInput File=> ") or 'regex_output.txt'
+        rego=self.out_dir(input("\033[1;32;40m"+self.regex_output.__doc__+"\033[0m\nInput File=> ") or 'regex_output.txt')
         rlst=sorted(set(lst))
         with open(rego, 'w', encoding='utf-8') as out:
             [out.write(f'{r}\n') for r in rlst]
