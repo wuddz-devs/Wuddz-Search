@@ -51,14 +51,23 @@
 
 
 ## Cli Commands
-- wudz-spa      -  Load Wuddz-Search
+- wudz-spa   Load Wuddz-Search
 
 
 ## Contact Info:
 - Email:     wuddz_devs@protonmail.com                                                              
 - Github:    https://github.com/wuddz-devs                                                          
-- Telegram:  https://t.me/wuddz_devs                                                                
+- Telegram:  https://t.me/wuddz_devs
+- Videos:    https://mega.nz/folder/IWVAXTqS#FoZAje2NukIcIrEXXKTo0w                                                                
 - Youtube:   wuddz-devs
+
+
+## Illustration Video:
+- https://mega.nz/file/EL1ETYAZ#j6Ek3eFh6g8XC7OgrB9qdkRbVBsfjd3haeTjUTZ_pkg
+
+
+## I'm A Brandy Guy, But I'd Never Refuse A Beer Or 2, Cheers!!
+- Ethereum: 0x1F1C47dD653Af628D394eac7bAA9Ccf774fd784f
 
 
 #### Enjoy my awesome creativity!!
