@@ -8,7 +8,7 @@ with open(os.path.join(os.path.dirname(__file__), 'README.md')) as wr:
 setup(
     name='wuddz_search',
     version='1.0.0',
-	description='*ALL IN 1, File/Folder Searcher, Parser & Archiver (Encryption Optional)',
+	description='*ALL IN 1, File/Folder Explorer, Parser & Archiver (Encryption Optional)',
 	long_description=readme,
 	long_description_content_type="text/markdown",
 	author='Wuddz_Devs',
