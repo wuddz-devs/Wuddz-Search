@@ -6,22 +6,25 @@
 ░░╚██╔╝░╚██╔╝░╚██████╔╝██████╔╝██████╔╝███████╗░░░░░░██████╔╝███████╗██║░░██║██║░░██║╚█████╔╝██║░░██║░
 ░░░╚═╝░░░╚═╝░░░╚═════╝░╚═════╝░╚═════╝░╚══════╝░░░░░░╚═════╝░╚══════╝╚═╝░░╚═╝╚═╝░░╚═╝░╚════╝░╚═╝░░╚═╝░
 
- [*]Descr:     ALL IN 1, FILE SEARCH/COPY/MOVE/DEL, REGEX PATTERN PARSER, FILE/FOLDER ARCHIVER        
+ [*]Descr:     ALL IN 1, FILE/FOLDER EXPLORER, REGEX PATTERN PARSER & ARCHIVER (ENCRYPTION OPTIONAL)  
  [*]Coder:     Wuddz_Devs                                                                             
  [*]Email:     wuddz_devs@protonmail.com                                                              
  [*]Github:    https://github.com/wuddz-devs                                                          
  [*]Telegram:  https://t.me/wuddz_devs                                                                
+ [*]Videos:    https://mega.nz/folder/IWVAXTqS#FoZAje2NukIcIrEXXKTo0w                                 
  [*]Youtube:   wuddz-devs                                                                             
 
  [*]Search Folder:                                                                                    
     Folder ->  e.g c:\\users\\user\\documents | /home/kali/Documents                                     
     e      ->  Exit Program                                                                           
-           ->  Hit Return|Enter Key To Search OS Platform Root Folder                                 
+           ->  Hit Return|Enter Key To Search OS Root Folder                                          
 """
 
-import subprocess, secrets, string, sys, re, time, shutil, signal, getpass
+import secrets, string, sys, re, time, shutil, signal
 from os import kill, name, system, path, sep, getpid
 from pathlib import Path, PurePath
+from getpass import getpass
+from subprocess import run, Popen
 system('')
 
 
@@ -85,13 +88,14 @@ class Wuddz_Search:
 
     def enum_output(self,list,fpath):
         """
- [*]Save, Archive, Copy, Move, Delete Files In List:                                            
+ [*]ARCHIVE, COPY, DELETE, MOVE, OPEN, PARSE, SAVE:                                             
     1            ->  Archive Files In List To Password Protected Archive [Extensions: zip or 7z]
     2            ->  Copy File/Folder                                                           
     3            ->  Move File/Folder                                                           
     4            ->  Delete File/Folder                                                         
-    5            ->  Parse Files In List For Regex Pattern                                      
-    file.txt     ->  Save File List As Text In file.txt File [e.g output.txt]                   
+    5            ->  Open File                                                                  
+    6            ->  Parse Files In List For Regex Pattern                                      
+    file.txt     ->  Save File List As Text In file.txt File                                    
     archive.ext  ->  Archive Files In List To archive.ext [Extensions: zip, 7z, tar]            
     b            ->  Back To Previous Screen                                                    
     e            ->  Exit Program                                                               
@@ -109,20 +113,20 @@ class Wuddz_Search:
                         ndp=[file for file in list if Path(file).is_file() and not str(list).count(str(PurePath(file).name))>1]
                         dup=[file for file in list if Path(file).is_file() and str(list).count(str(PurePath(file).name))>1]
                         if epath=='1':
-                            epath=self.out_dir(input("Input Archivename=> ") or str(self.da))
-                            self.pkk=getpass.getpass("Input Password Or Get Random Password=> ") or '0'
+                            epath=self.out_dir(input("Input Archive [e.g test.7z]=> ") or str(self.da))
+                            self.pkk=getpass("Input Password Or Random Password Used=> ") or '0'
                             if self.pkk=='0':self.pkk=''.join(secrets.choice((string.ascii_letters+string.digits).strip()) for i in range(32))
-                            sub="subprocess.run(['7z', 'a', '-t'+str(epath).split('.')[1], epath, '@'+lst, '-mx9', '-p'+self.pkk], capture_output=True, text=True)"
+                            sub="run(['7z', 'a', '-t'+str(epath).split('.')[1], epath, '@'+lst, '-mx9', '-p'+self.pkk], capture_output=True, text=True)"
                             pwf=str(Path(epath).stem).split('.')[0]
                             with open(str(self.pf).replace('archive',pwf), 'w') as ps:
                                 ps.write("'"+str(Path(epath).resolve())+"'\n"+str(self.pkk)+'\n'+'_'*146+'\n\n')
                         else:
                             epath=self.out_dir(epath)
-                            sub="subprocess.run(['7z', 'a', '-t'+str(epath).split('.')[1], epath, '@'+lst, '-mx9'], capture_output=True, text=True)"
+                            sub="run(['7z', 'a', '-t'+str(epath).split('.')[1], epath, '@'+lst, '-mx9'], capture_output=True, text=True)"
                         if ndp:self.dups(epath,ndp,sub)
                         if dup:self.dups(epath,dup,sub,dpl='yes')
                     elif epath=='2' or epath=='3':
-                        src=input("Input Source File/Folder Path=> ") or '0'
+                        src=input("Input Source File/Folder=> ") or '0'
                         des=input("Input Destination Folder Or Default Folder Used=> ") or self.pkg
                         if Path(src).exists() and Path(des).exists():
                             if epath=='2':
@@ -130,10 +134,11 @@ class Wuddz_Search:
                                 else:shutil.copytree(src,des,dirs_exist_ok=True,symlinks=True)
                             else:shutil.move(src,des)
                     elif epath=='4':
-                        fl=input("Input File/Folder Path To Delete=> ") or '0'
+                        fl=input("Input File/Folder To Delete=> ") or '0'
                         if Path(fl).is_file():Path(fl).unlink()
                         else:shutil.rmtree(fl)
-                    elif epath=='5':self.regex_search(list)
+                    elif epath=='5':Popen([input('Input File To Open=> ')], shell=True)
+                    elif epath=='6':self.regex_search(list)
                     elif '.txt' in epath:
                         epath=self.out_dir(epath)
                         with open(epath, 'w', encoding='utf-8') as ep:
@@ -146,16 +151,16 @@ class Wuddz_Search:
 
     def regex_search(self,list):
         """
- [*]Parse Files In List For Regex Pattern:   
-    1  ->  IPTVURL                           
-    2  ->  IP+IP:PORT                        
-    3  ->  URL                               
-    4  ->  MAC                               
-    5  ->  EMAIL:PASS                        
-    6  ->  USER:PASS                         
-    r  ->  Regex Pattern  [e.g \S+:\S+]
-    b  ->  Back To Previous Screen           
-    e  ->  Exit Program                      
+ [*]Parse Files In List For Regex Pattern:
+    1  ->  IPTVURL                        
+    2  ->  IP+IP:PORT                     
+    3  ->  URL                            
+    4  ->  MAC                            
+    5  ->  EMAIL:PASS                     
+    6  ->  USER:PASS                      
+    r  ->  Regex Pattern  [e.g \S+:\S+]   
+    b  ->  Back To Previous Screen        
+    e  ->  Exit Program                   
 """
         while True:
             self.clear_screen()
@@ -202,7 +207,7 @@ class Wuddz_Search:
     *test    ->  Find All Files With Filename Ending With "test" [.ext Optional e.g *test.txt Files]                
     *test*   ->  Find All Files With "test" Anywhere In Filename [.ext Optional e.g *test*.py Files]                
     *te*st*  ->  Find All Files With "te" Followed By "st" Anywhere In Filename [.ext Optional e.g *te*st*.py Files]
-    c        ->  Change Search Folder                                                                               
+    b        ->  Back To Input Search Folder                                                                        
     e        ->  Exit Program                                                                                       
              ->  Hit Return To Find All Files In Folder                                                             
 """
@@ -211,7 +216,7 @@ class Wuddz_Search:
             try:
                 self.clear_screen()
                 stype=input("\033[1;32;40m"+self.search_type.__doc__+"\033[0m\nInput Search Type=> ") or '*'
-                if stype=='c':break
+                if stype=='b':break
                 elif stype=='e':kill(getpid(),signal.SIGTERM)
                 else:
                     flst=list(Path(fpath).rglob(stype))
@@ -222,7 +227,7 @@ class Wuddz_Search:
         while True:
             try:
                 self.clear_screen()
-                fpath=input("\033[1;32;40m"+__doc__+"\033[0m\nInput Folder=> ") or path.abspath(sep)
+                fpath=input("\033[1;32;40m"+__doc__+"\033[0m\nInput Search Folder=> ") or path.abspath(sep)
                 if Path(fpath).is_dir():self.search_type(fpath)
                 elif fpath=='e':kill(getpid(),signal.SIGTERM)
             except:pass
