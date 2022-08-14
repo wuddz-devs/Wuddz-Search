@@ -1,4 +1,4 @@
-# Wuddz-Search *ALL IN 1, File/Folder Searcher, Parser & Archiver (Encryption Optional)
+# Wuddz-Search *ALL IN 1, File/Folder Explorer, Parser & Archiver (Encryption Optional)
 
 
 ## Description
