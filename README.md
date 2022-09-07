@@ -58,7 +58,6 @@
 - Email:     wuddz_devs@protonmail.com                                                              
 - Github:    https://github.com/wuddz-devs                                                          
 - Telegram:  https://t.me/wuddz_devs
-- Videos:    https://mega.nz/folder/IWVAXTqS#FoZAje2NukIcIrEXXKTo0w                                                                
 - Youtube:   wuddz-devs
 
 
