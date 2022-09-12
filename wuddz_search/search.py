@@ -130,8 +130,8 @@ class Wuddz_Search:
                         else:
                             epath=self.out_dir(epath)
                             sub="run(['7z', 'a', '-t'+str(epath).split('.')[1], epath, '@'+lst, '-mx9'], capture_output=True, text=True)"
-                        if ndp:self.dups(epath,ndp,sub)
-                        if dup:self.dups(epath,dup,sub,dpl='yes')
+                        if ndp:self.list_archive(epath,ndp,sub)
+                        if dup:self.list_archive(epath,dup,sub,dpl='yes')
                     elif epath=='2' or epath=='3':
                         src=input("Input Source File/Folder Or 'a' For Entire List=> ") or '0'
                         des=input("Input Destination Folder Or Default Folder Used=> ") or self.pkg
