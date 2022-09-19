@@ -10,6 +10,7 @@
  [*]Coder:     Wuddz_Devs                                                                             
  [*]Email:     wuddz_devs@protonmail.com                                                              
  [*]Github:    https://github.com/wuddz-devs                                                          
+ [*]Reddit:    https://reddit.com/user/wuddz-devs                                                     
  [*]Telegram:  https://t.me/wuddz_devs                                                                
  [*]Videos:    https://mega.nz/folder/IWVAXTqS#FoZAje2NukIcIrEXXKTo0w                                 
  [*]Youtube:   wuddz-devs                                                                             
@@ -34,7 +35,7 @@ class Wuddz_Search:
         self.lf=Path(self.pkg).joinpath('file.lst')
         self.da=Path(self.pkg).joinpath('archive.7z')
         self.pf=Path(self.pkg).joinpath('archive-pwd.txt')
-        Path(Path(str(self.pkg))).mkdir(parents=True, exist_ok=True)
+        Path(self.pkg).mkdir(parents=True, exist_ok=True)
     
     def clear_screen(self):
         if name=='nt':system('cls')
@@ -68,7 +69,7 @@ class Wuddz_Search:
                 mt=time.ctime(Path.stat(f).st_mtime)
                 total+=Path.stat(f).st_size
                 fs=self.file_size(Path.stat(f).st_size)
-                eout.append(f'{i}  {f}'+' '*4+str(fs)+' '*4+mt)
+                eout.append(f'{i}  {f}'+' '*4+str(fs)+' '*2+mt)
                 me='boss'
             except:pass
             if not me:eout.append(f'{i} {f}')
@@ -76,19 +77,27 @@ class Wuddz_Search:
         eout.append('Total File Size►► '+str(total))
         return eout
     
-    def list_archive(self,epath,list,sub,dpl=None):
-        lst=str(self.lf)
-        with open(lst, 'w') as bn:
-            [bn.write(f'{file}\n') for file in list]
-        if dpl!=None:sub=sub.replace(" epath,", " epath, '-spf',")
-        out=eval(sub)
-        if 'Everything is Ok' in str(out) and dpl==None:
-            print("\n\033[1;34;40m['"+str(Path(epath).resolve())+"']► Files Archived Successfully\033[0m")
+    def list_archive(self,epath,list,sub,dpl=None,pkk=None):
+        try:
+            lst=str(self.lf)
+            with open(lst, 'w') as bn:
+                [bn.write(f'{file}\n') for file in list]
+            if dpl!=None:sub=sub.replace(" epath,", " epath, '-spf',")
+            out=eval(sub)
+            if 'Everything is Ok' in str(out) and dpl==None:
+                print("\n\033[1;34;40m['"+str(Path(epath).resolve())+"']► Files Archived Successfully\033[0m")
+        except:pass
         Path(lst).unlink()
     
     def list_modes(self,lst,elst,des=None):
-        for e in elst[:-1]:
-            fp=e.split('  ')[1]
+        for fp in elst:
+            dc=0
+            if des!=None:
+                fn=Path(fp).name
+                while Path(des).joinpath(fn).exists():
+                    dc+=1
+                    fn=str(Path(fp).stem)+f'_{dc}'+str(Path(fp).suffix)
+                dec=str(Path(des).joinpath(fn))
             for l in lst:
                 try:
                     eval(l)
@@ -119,35 +128,44 @@ class Wuddz_Search:
                     if any(e in epath for e in extensions) or epath=='1':
                         ndp=[file for file in list if Path(file).is_file() and not str(list).count(str(PurePath(file).name))>1]
                         dup=[file for file in list if Path(file).is_file() and str(list).count(str(PurePath(file).name))>1]
+                        pkk=''
                         if epath=='1':
                             epath=self.out_dir(input("Input Archive [e.g test.7z]=> ") or str(self.da))
-                            self.pkk=getpass("Input Password Or Random Password Used=> ") or '0'
-                            if self.pkk=='0':self.pkk=''.join(secrets.choice((string.ascii_letters+string.digits).strip()) for i in range(32))
-                            sub="run(['7z', 'a', '-t'+str(epath).split('.')[1], epath, '@'+lst, '-mx9', '-p'+self.pkk], capture_output=True, text=True)"
-                            pwf=str(Path(epath).stem).split('.')[0]
-                            with open(str(self.pf).replace('archive',pwf), 'w') as ps:
-                                ps.write("'"+str(Path(epath).resolve())+"'\n"+str(self.pkk)+'\n'+'_'*146+'\n\n')
+                            if not Path(epath).exists():
+                                pkk=getpass("Input Password Or Random Password Used=> ") or None
+                                if pkk==None:pkk=''.join(secrets.choice((string.ascii_letters+string.digits).strip()) for i in range(32))
+                                sub="run(['7z', 'a', '-t'+str(epath).split('.')[1], epath, '@'+lst, '-mx9', '-p'+pkk], capture_output=True, text=True)"
+                                pwf=str(Path(epath).stem)
+                                with open(str(self.pf).replace('archive',pwf), 'w') as ps:
+                                    ps.write("'"+str(Path(epath).resolve())+"'\n"+str(pkk)+'\n'+'_'*146+'\n\n')
                         else:
                             epath=self.out_dir(epath)
-                            sub="run(['7z', 'a', '-t'+str(epath).split('.')[1], epath, '@'+lst, '-mx9'], capture_output=True, text=True)"
-                        if ndp:self.list_archive(epath,ndp,sub)
+                            if not Path(epath).exists():
+                                sub="run(['7z', 'a', '-t'+str(epath).split('.')[1], epath, '@'+lst, '-mx9'], capture_output=True, text=True)"
+                        if ndp:self.list_archive(epath,ndp,sub,pkk=pkk)
                         if dup:self.list_archive(epath,dup,sub,dpl='yes')
                     elif epath=='2' or epath=='3':
-                        src=input("Input Source File/Folder Or 'a' For Entire List=> ") or '0'
+                        src=input("Input Source File/Folder Or 'a' For Entire List=> ") or None
                         des=input("Input Destination Folder Or Default Folder Used=> ") or self.pkg
                         if epath=='2':
-                            if src=='a':self.list_modes(['shutil.copy(fp,des)'],elst,des=des)
-                            elif Path(src).is_file() and Path(des).exists():shutil.copy(src,des)
+                            if src=='a' and Path(des).is_dir():self.list_modes(['shutil.copy(fp,dec)'],elst,des=des)
+                            elif Path(src).is_file():shutil.copy(src,self.out_dir(des))
                             else:shutil.copytree(src,des,dirs_exist_ok=True,symlinks=True)
                         else:
-                            if src=='a':self.list_modes(['shutil.move(fp,des)'],elst,des=des)
+                            if src=='a' and Path(des).is_dir():self.list_modes(['shutil.move(fp,dec)'],elst,des=des)
                             else:shutil.move(src,des)
                     elif epath=='4':
-                        fl=input("Input File/Folder To Delete Or 'a' For Entire List=> ") or '0'
+                        fl=input("Input File/Folder To Delete Or 'a' For Entire List=> ") or None
                         if fl=='a':self.list_modes(['Path(fp).unlink()','shutil.rmtree(fp)'],elst)
                         elif Path(fl).is_file():Path(fl).unlink()
                         else:shutil.rmtree(fl)
-                    elif epath=='5':Popen([input('Input File To Open=> ')], shell=True)
+                    elif epath=='5':
+                        fto=input('Input File To Open=> ') or None
+                        if fto!=None:
+                            if name=='nt':
+                                if Path(fto).suffix=='.exe':Popen(['start',str(fto)],shell=True)
+                                else:Popen([str(fto)],shell=True)
+                            else:Popen(['open '+str(fto)],shell=True)
                     elif epath=='6':self.regex_search(list)
                     elif '.txt' in epath:
                         epath=self.out_dir(epath)
@@ -161,15 +179,17 @@ class Wuddz_Search:
 
     def regex_search(self,list):
         """ [*]Parse Files In List For Regex Pattern:   
-    1  ->  Iptv Server Url                   
-    2  ->  Ip+Ip:Port                        
-    3  ->  Url                               
-    4  ->  Mac Address                       
-    5  ->  Email:Pass                        
-    6  ->  User:Pass                         
-    r  ->  Input Regex Pattern  [e.g \S+:\S+]
-    b  ->  Back To Previous Screen           
-    e  ->  Exit Program                      
+    1  ->  IPTV SERVER URL                   
+    2  ->  IP+IP:PORT                        
+    3  ->  URL                               
+    4  ->  MAC ADDRESS                       
+    5  ->  EMAIL:PASS                        
+    6  ->  USER:PASS                         
+    7  ->  SERVER MAC COMBO                  
+    8  ->  M3U URL                           
+    r  ->  INPUT REGEX PATTERN  [e.g \S+:\S+]
+    b  ->  BACK TO PREVIOUS SCREEN           
+    e  ->  EXIT PROGRAM                      
 """
         while True:
             self.clear_screen()
@@ -180,7 +200,9 @@ class Wuddz_Search:
             '3':'\w+://[\w\-\.]+.*$',
             '4':'\w{2}:\w{2}:\w{2}:\w{2}:\w{2}:\w{2}',
             '5':'[\w\.-]+@[\w\.-]+:[\w\.-]+',
-            '6':'^[\w\.-]+:[\w\.-]+$'
+            '6':'^[\w\.-]+:[\w\.-]+$',
+            '7':'(h\w+://[\w\-\.]+:?\w+/?\w+?/c/)(\s+)?(\S+)?(\w{2}:\w{2}:\w{2}:\w{2}:\w{2}:\w{2})',
+            '8':'(h\w+://[\w\-\.]+:?\w+/get.php\?username=\S+?&)(\S+?)?(password=\S+?&)',
             }
             rp=input("\033[1;32;40m"+self.regex_search.__doc__+"\033[0m\nInput Choice=> ") or '0'
             if rp=='b':break
@@ -190,7 +212,9 @@ class Wuddz_Search:
                 for file in list:
                     if Path(file).is_file():
                         with open(file, 'r', encoding="utf8", errors ='replace') as f:
-                            [plst.append(a) for b in (x for x in f) for a in re.compile(str(rgp[rp])).findall(b)]
+                            if rp=='7':[plst.append(f'{a.group(1)} {a.group(4).upper()}') for b in (x for x in f) for a in re.finditer(str(rgp[rp]),b)]
+                            elif rp=='8':[plst.append(f'{a.group(1)}{a.group(3).lower()}') for b in (x for x in f) for a in re.finditer(str(rgp[rp]),b)]
+                            else:[plst.append(a) for b in (x for x in f) for a in re.compile(str(rgp[rp])).findall(b)]
                 if plst:self.regex_output(plst)
 
     def regex_output(self,lst):
@@ -232,10 +256,6 @@ class Wuddz_Search:
                     if flst:self.enum_output(flst,fpath)
             except:pass
     
-    def exit(self):    
-        self.clear_screen()
-        kill(getpid(),signal.SIGTERM)
-    
     def main(self):
         while True:
             try:
@@ -245,6 +265,12 @@ class Wuddz_Search:
                 elif fpath=='e':self.exit()
             except:pass
         self.clear_screen()
+    
+    def exit(self):    
+        self.clear_screen()
+        kill(getpid(),signal.SIGTERM)
+
 
 def cli_main():
-    Wuddz_Search().main()
+    wdevs=Wuddz_Search()
+    wdevs.main()
